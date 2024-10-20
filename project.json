@@ -1,0 +1,99 @@
+{
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "name": "pet-markt",
+  "projectType": "application",
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "sourceRoot": "src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:application",
+      "options": {
+        "outputPath": "dist/pet-markt",
+        "index": "src/index.html",
+        "browser": "src/main.ts",
+        "polyfills": [
+          "zone.js"
+        ],
+        "tsConfig": "tsconfig.app.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "public"
+          }
+        ],
+        "styles": [
+          "src/styles.scss"
+        ],
+        "scripts": [],
+        "server": "src/main.server.ts",
+        "prerender": true,
+        "ssr": {
+          "entry": "server.ts"
+        }
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kB",
+              "maximumError": "1MB"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kB",
+              "maximumError": "4kB"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "pet-markt:build:production"
+        },
+        "development": {
+          "buildTarget": "pet-markt:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n"
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "polyfills": [
+          "zone.js",
+          "zone.js/testing"
+        ],
+        "tsConfig": "tsconfig.spec.json",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "public"
+          }
+        ],
+        "styles": [
+          "src/styles.scss"
+        ],
+        "scripts": []
+      }
+    }
+  }
+}
