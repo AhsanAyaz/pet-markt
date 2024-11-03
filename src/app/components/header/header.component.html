@@ -5,9 +5,15 @@
       <ul class="flex space-x-4">
         <li><a routerLink="/" class="hover:underline">Home</a></li>
         <li><a routerLink="/products" class="hover:underline">Products</a></li>
-        <li><a routerLink="/cart" class="hover:underline">Cart ({{ cartStore.totalItems() }})</a></li>
-        <li><a routerLink="/login" class="hover:underline">Login</a></li>
-        <li><a routerLink="/signup" class="hover:underline">Sign Up</a></li>
+        <li>
+          <a routerLink="/cart" class="hover:underline"
+            >Cart ({{ cartStore.totalItems() }})</a
+          >
+        </li>
+        <li><a routerLink="/auth/login" class="hover:underline">Login</a></li>
+        <li>
+          <a routerLink="/auth/signup" class="hover:underline">Sign Up</a>
+        </li>
       </ul>
     </nav>
   </div>

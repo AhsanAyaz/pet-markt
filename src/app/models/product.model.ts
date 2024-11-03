@@ -5,4 +5,17 @@ export interface Product {
   price: number;
   image: string;
   stripePriceId: string;
+  variations?: ProductVariation[];
+}
+
+export interface ProductVariation {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+}
+
+export interface CartItem extends Product {
+  quantity: number;
+  selectedVariation?: ProductVariation;
 }

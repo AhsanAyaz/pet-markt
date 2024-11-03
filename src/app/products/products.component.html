@@ -34,7 +34,7 @@
   >
     @for (product of productStore.products(); track product.id) {
     <div>
-      <app-product-card [product]="product" />
+      <app-product-card (addToCart)="addToCart($event)" [product]="product" />
     </div>
     }
   </div>

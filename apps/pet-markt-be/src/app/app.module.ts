@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ProductsModule } from './products/products.module';
 import { join } from 'path';
+import { CheckoutModule } from './checkout/checkout.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { join } from 'path';
       autoSchemaFile: join(process.cwd(), 'apps/pet-markt-be/src/schema.gql'),
     }),
     ProductsModule,
+    CheckoutModule,
   ],
 })
 export class AppModule {}

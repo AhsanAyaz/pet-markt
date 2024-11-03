@@ -5,7 +5,9 @@
     <p>{{ product().description }}</p>
     <div class="card-actions justify-between items-center">
       <span class="text-xl font-bold">${{ product().price }}</span>
-      <button class="btn btn-primary">Add to Cart</button>
+      <button class="btn btn-primary" (click)="addToCart.emit(product())">
+        Add to Cart
+      </button>
     </div>
   </div>
 </div>

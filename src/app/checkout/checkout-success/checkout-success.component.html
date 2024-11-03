@@ -1,0 +1,47 @@
+<div class="max-w-2xl mx-auto py-8 space-y-8">
+  <div class="text-center space-y-4">
+    <div class="text-6xl text-success">✓</div>
+    <h1 class="text-3xl font-bold text-success">Payment Successful!</h1>
+    <p class="text-gray-600">
+      Thank you for your purchase. Your order has been confirmed.
+    </p>
+  </div>
+
+  <div class="card bg-base-100">
+    <div class="card-body">
+      <h2 class="card-title">Order Summary</h2>
+      <div class="space-y-4">
+        @for (item of cart.items(); track item.id) {
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-4">
+            <div class="avatar">
+              <div class="w-16 h-16 rounded">
+                <img [src]="item.image" [alt]="item.name" />
+              </div>
+            </div>
+            <div>
+              <h3 class="font-semibold">{{ item.name }}</h3>
+              <p class="text-sm text-gray-600">Quantity: {{ item.quantity }}</p>
+            </div>
+          </div>
+          <p class="font-semibold">${{ item.price * item.quantity }}</p>
+        </div>
+        }
+
+        <div class="divider"></div>
+
+        <div class="flex justify-between items-center font-bold">
+          <span>Total</span>
+          <span>${{ cart.totalAmount() }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center space-y-4">
+    <p>We'll send you a confirmation email with your order details.</p>
+    <a routerLink="/" class="btn btn-primary" (click)="clearCart()">
+      Continue Shopping
+    </a>
+  </div>
+</div>

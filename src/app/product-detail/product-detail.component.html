@@ -1,0 +1,45 @@
+@if (product) {
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="card">
+    <figure>
+      <img [src]="product.image" [alt]="product.name" class="w-full" />
+    </figure>
+  </div>
+  <div class="space-y-4">
+    <h1 class="text-3xl font-bold">{{ product.name }}</h1>
+    <p class="text-xl">${{ product.price }}</p>
+    <p class="text-gray-600">{{ product.description }}</p>
+
+    @if (product.variations && product.variations.length > 0) {
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Select Variation</span>
+      </label>
+      <select class="select select-bordered" [(ngModel)]="selectedVariation">
+        @for (variation of product.variations; track variation.id) {
+        <option [value]="variation.id">
+          {{ variation.name }} - ${{ variation.price }}
+        </option>
+        }
+      </select>
+    </div>
+    }
+
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Quantity</span>
+      </label>
+      <input
+        type="number"
+        [(ngModel)]="quantity"
+        min="1"
+        class="input input-bordered w-20"
+      />
+    </div>
+
+    <button class="btn btn-primary" (click)="addToCart()">Add to Cart</button>
+  </div>
+</div>
+} @else {
+<p>Product not found</p>
+}
