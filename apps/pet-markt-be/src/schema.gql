@@ -1,0 +1,42 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Product {
+  id: Int!
+  name: String!
+  description: String!
+  price: Float!
+  image: String!
+  stripePriceId: String!
+  isFeatured: Boolean
+}
+
+type Query {
+  products: [Product!]!
+  searchProducts(term: String!): [Product!]!
+  product(id: Int!): Product!
+}
+
+type Mutation {
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): Product!
+  removeProduct(id: Int!): Product!
+}
+
+input CreateProductInput {
+  name: String!
+  description: String!
+  price: Float!
+  image: String!
+  stripePriceId: String!
+}
+
+input UpdateProductInput {
+  name: String
+  description: String
+  price: Float
+  image: String
+  stripePriceId: String
+  id: Int!
+}

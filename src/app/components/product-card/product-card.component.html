@@ -1,0 +1,11 @@
+<div class="card h-full bg-slate-900 shadow-xl">
+  <figure><img [src]="product().image" [alt]="product().name" /></figure>
+  <div class="card-body">
+    <h2 class="card-title">{{ product().name }}</h2>
+    <p>{{ product().description }}</p>
+    <div class="card-actions justify-between items-center">
+      <span class="text-xl font-bold">${{ product().price }}</span>
+      <button class="btn btn-primary">Add to Cart</button>
+    </div>
+  </div>
+</div>

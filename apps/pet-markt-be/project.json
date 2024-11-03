@@ -1,0 +1,26 @@
+{
+  "name": "pet-markt-be",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/pet-markt-be/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "pet-markt-be:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "pet-markt-be:build:development"
+        },
+        "production": {
+          "buildTarget": "pet-markt-be:build:production"
+        }
+      }
+    }
+  }
+}
