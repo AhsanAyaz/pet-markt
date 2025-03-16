@@ -1,14 +1,44 @@
-<p>products works!</p>
-@if(productStore.loading()) {
-<div>Loading...</div>
-} @else if (productStore.error()) {
-<div>{{ productStore.error() }}</div>
-} @else if (productStore.products().length) {
-<ul>
-  @for (product of productStore.products(); track product.id) {
-  {{
-    product | json
-  }}
+<div class="container mx-auto px-4">
+  <div class="mb-4">
+    <!-- search input -->
+    <input
+      type="text"
+      placeholder="Search products..."
+      class="input input-bordered w-full max-w-xs"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="onSearch(searchTerm)"
+    />
+  </div>
+
+  @if(productStore.loading()) {
+  <div>Loading...</div>
+  } @else if (productStore.error()) {
+  <!-- error loading products -->
+  <div class="alert alert-error">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>Error: {{ productStore.error() }} </span>
+  </div>
+  } @else if (productStore.products().length) {
+  <!-- products grid -->
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr"
+  >
+    <!-- loop over products -->
+    @for (product of productStore.products(); track product.id) {
+    <app-product-card (addToCart)="addToCart($event)" [product]="product" />
+    }
+  </div>
   }
-</ul>
-}
+</div>

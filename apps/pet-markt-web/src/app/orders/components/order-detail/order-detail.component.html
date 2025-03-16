@@ -1,0 +1,31 @@
+<div class="space-y-4">
+  @for (item of order()?.items; track item.id) {
+  <div class="flex justify-between items-center gap-4">
+    <div class="flex items-center gap-4 flex-1">
+      <div class="avatar">
+        <div class="w-16 h-16 rounded">
+          <img [src]="item.product.image" [alt]="item.product.name" />
+        </div>
+      </div>
+      <div>
+        <h3 class="font-semibold">{{ item.product.name }}</h3>
+        <span class="text-sm text-gray-300">Quantity: {{ item.quantity }}</span>
+      </div>
+    </div>
+    <span class="font-semibold"
+      >${{ item.price * item.quantity | number : '1.2-2' }}</span
+    >
+  </div>
+  }
+  <div class="divider"></div>
+
+  <div class="flex justify-between items-center font-bold">
+    <span>Total</span>
+    <span>${{ order()?.totalAmount | number : '1.2-2' }}</span>
+  </div>
+
+  <div class="text-sm text-gray-300">
+    <p>Status: {{ order()?.status }}</p>
+    <p>Order Date: {{ order()?.createdAt | date : 'medium' }}</p>
+  </div>
+</div>

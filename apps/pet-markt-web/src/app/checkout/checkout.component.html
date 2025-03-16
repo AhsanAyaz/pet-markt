@@ -1,0 +1,26 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="space-y-6">
+    <h2 class="text-2xl font-bold">Order Summary</h2>
+    @for (item of cartStore.items(); track item.id) {
+    <div class="flex justify-between items-center">
+      <div>
+        <p class="font-semibold">{{ item.name }}</p>
+        <p class="text-sm text-gray-300">Quantity: {{ item.quantity }}</p>
+      </div>
+      <p>${{ item.price * item.quantity }}</p>
+    </div>
+    }
+    <div class="divider"></div>
+    <div class="flex justify-between items-center font-bold">
+      <p>Total</p>
+      <p>${{ cartStore.totalAmount() | number : '1.2-2' }}</p>
+    </div>
+  </div>
+
+  <div class="space-y-6">
+    <h2 class="text-2xl font-bold">Payment</h2>
+    <button class="btn btn-primary w-full" (click)="checkout()">
+      Pay with Stripe
+    </button>
+  </div>
+</div>

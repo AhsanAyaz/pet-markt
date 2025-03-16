@@ -1,0 +1,15 @@
+<div
+  class="card h-full bg-slate-900 shadow-xl hover:-translate-y-2 duration-200"
+>
+  <figure><img [src]="product().image" [alt]="product().name" /></figure>
+  <div class="card-body">
+    <h2 class="card-title">{{ product().name }}</h2>
+    <p>{{ product().description }}</p>
+    <div class="card-actions justify-between items-center">
+      <span class="text-xl font-bold">${{ product().price }}</span>
+      <button (click)="onAddToCart(product())" class="btn btn-primary">
+        Add to Cart
+      </button>
+    </div>
+  </div>
+</div>

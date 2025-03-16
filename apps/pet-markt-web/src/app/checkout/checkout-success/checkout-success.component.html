@@ -1,0 +1,30 @@
+<div class="max-w-2xl mx-auto py-8 space-y-8">
+  @if (orderStore.error()) {
+  <div class="alert alert-error">
+    {{ orderStore.error() }}
+  </div>
+  } @else {
+  <div class="text-center space-y-4">
+    <div class="text-6xl text-success">✓</div>
+    <h1 class="text-3xl font-bold text-success">Payment Successful!</h1>
+    <p class="text-gray-300">
+      Thank you for your purchase. Your order has been confirmed.
+    </p>
+  </div>
+
+  <div class="card bg-base-100">
+    <div class="card-body">
+      <p class="text-sm mb-4">Order ID: {{ orderStore.orderDetail()?.id }}</p>
+      <h2 class="card-title">Order Summary</h2>
+      @defer (on immediate; hydrate never) {
+      <app-order-detail [order]="orderStore.orderDetail()" />
+      }
+    </div>
+  </div>
+
+  <div class="text-center space-y-4">
+    <p>We'll send you a confirmation email with your order details.</p>
+    <a routerLink="/" class="btn btn-primary">Continue Shopping</a>
+  </div>
+  }
+</div>
