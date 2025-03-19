@@ -1,12 +1,43 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { Order, OrderItem, Product } from '@prisma/client';
+import { Order, OrderItem, OrderStatus, Product } from '@prisma/client';
 import { Apollo, gql } from 'apollo-angular';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 const GET_ORDER = gql`
   query GetOrder($id: String!) {
     order(id: $id) {
+      id
+      totalAmount
+      status
+      items {
+        id
+        quantity
+        price
+        product {
+          id
+          name
+          image
+        }
+      }
+      createdAt
+    }
+  }
+`;
+
+const DELETE_UNPAID_ORDER = gql`
+  mutation RemoveOrder($id: String!) {
+    removeOrder(id: $id) {
+      orderId
+      success
+      error
+    }
+  }
+`;
+
+const UPDATE_ORDER = gql`
+  mutation UpdateOrderStatus($id: String!, $status: OrderStatus!) {
+    updateOrder(updateOrderInput: { id: $id, status: $status }) {
       id
       totalAmount
       status
@@ -63,6 +94,43 @@ export const OrderStore = signalStore(
         .pipe(
           tap({
             next: ({ data }) => patchState(store, { orderDetail: data.order }),
+            error: (error) => patchState(store, { error: error.message }),
+          }),
+          map(({ data }) => data.order)
+        );
+    },
+    deleteUnpaidOrder(id: string) {
+      patchState(store, { error: null });
+      return apollo
+        .mutate<{ order: OrderWithItems }>({
+          mutation: DELETE_UNPAID_ORDER,
+          variables: {
+            id,
+          },
+        })
+        .pipe(
+          tap({
+            next: ({ data }) => {
+              console.log('Unpaid order deleted', { data });
+            },
+            error: (error) => patchState(store, { error: error.message }),
+          })
+        );
+    },
+    updateOrder(id: string, status: OrderStatus) {
+      patchState(store, { error: null });
+      return apollo
+        .mutate<{ updateOrder: OrderWithItems }>({
+          mutation: UPDATE_ORDER,
+          variables: {
+            id,
+            status,
+          },
+        })
+        .pipe(
+          tap({
+            next: ({ data }) =>
+              patchState(store, { orderDetail: data!.updateOrder }),
             error: (error) => patchState(store, { error: error.message }),
           })
         );

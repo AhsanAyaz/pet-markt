@@ -4,6 +4,7 @@ import { OrderStore } from '../../stores/order.store';
 import { ActivatedRoute } from '@angular/router';
 import { OrderDetailComponent } from '../../orders/components/order-detail/order-detail.component';
 import { CartStore } from '../../stores/cart.store';
+import { EMPTY, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-checkout-success',
@@ -28,6 +29,16 @@ export class CheckoutSuccessComponent implements OnInit {
       this.orderStore.setError('No order ID found');
       return;
     }
-    this.orderStore.getOrder(orderId).subscribe();
+    this.orderStore
+      .getOrder(orderId)
+      .pipe(
+        mergeMap((order) => {
+          if (order.status === 'PAYMENT_REQUIRED') {
+            return this.orderStore.updateOrder(order.id, 'PENDING');
+          }
+          return EMPTY;
+        })
+      )
+      .subscribe();
   }
 }

@@ -33,7 +33,7 @@ export class CheckoutService {
       })),
       mode: 'payment',
       success_url: `${process.env.FRONTEND_URL}/checkout/success?orderId=${order.id}`,
-      cancel_url: `${process.env.FRONTEND_URL}/checkout/cancel`,
+      cancel_url: `${process.env.FRONTEND_URL}/checkout/cancel?orderId=${order.id}`,
       metadata: {
         orderId: order.id,
       },

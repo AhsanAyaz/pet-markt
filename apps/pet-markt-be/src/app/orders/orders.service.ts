@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderInput } from './dto/create-order.input';
-import { UpdateOrderInput } from './dto/update-order.input';
 import { PrismaService } from '../prisma/prisma.service';
+import { OrderStatus, Prisma } from '@prisma/client';
+import { OrderDeletionResp } from './dto/order-deletion-response.dto';
 
 @Injectable()
 export class OrdersService {
@@ -11,7 +12,7 @@ export class OrdersService {
     return this.prisma.order.create({
       data: {
         totalAmount,
-        status: 'PENDING',
+        status: 'PAYMENT_REQUIRED',
         items: {
           create: items.map((item) => ({
             quantity: item.quantity,
@@ -51,11 +52,49 @@ export class OrdersService {
     });
   }
 
-  update(id: number, updateOrderInput: UpdateOrderInput) {
-    return `This action updates a #${id} order`;
+  update(id: string, updateOrderInput: Prisma.OrderUpdateInput) {
+    return this.prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        ...updateOrderInput,
+      },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  remove(id: string) {
+    return this.prisma.order.delete({
+      where: { id },
+    });
+  }
+
+  async removeUnpaid(id: string): Promise<OrderDeletionResp> {
+    const order = await this.prisma.order.findUnique({
+      where: { id: id },
+    });
+
+    if (!order) {
+      return { success: true, orderId: id }; // Or return { success: true } if you prefer.
+    }
+    if (order.status === OrderStatus.PAYMENT_REQUIRED) {
+      await this.prisma.order.delete({
+        where: { id: id },
+      });
+      return { success: true, orderId: id };
+    }
+
+    return {
+      success: false,
+      orderId: id,
+      error: 'Order is not in PAYMENT_REQUIRED state',
+    };
   }
 }

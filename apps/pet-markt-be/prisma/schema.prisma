@@ -43,12 +43,13 @@ model OrderItem {
   productId String
   quantity  Int
   price     Float
-  order     Order   @relation(fields: [orderId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 enum OrderStatus {
   PENDING
   STARTED_DELIVERY
   DELIVERED
+  PAYMENT_REQUIRED
 }
