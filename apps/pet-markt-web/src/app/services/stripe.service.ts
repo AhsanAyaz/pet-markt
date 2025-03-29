@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { CartStore } from '../stores/cart.store';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,7 @@ export class StripeService {
     const totalAmount = this.cartStore.totalAmount();
 
     return this.http.post<{ url: string }>(
-      'http://localhost:3000/api/checkout',
+      `${environment.apiUrl}/api/checkout`,
       {
         items: items.map((item) => ({
           productId: item.id,

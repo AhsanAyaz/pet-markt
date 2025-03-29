@@ -13,6 +13,7 @@ import { OrdersModule } from './orders/orders.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'apps/pet-markt-be/dist/schema.gql'),
+      useGlobalPrefix: true,
     }),
     ProductsModule,
     CheckoutModule,

@@ -44,7 +44,13 @@
               "maximumError": "8kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "fileReplacements": [
+            {
+              "replace": "apps/pet-markt-web/src/app/environments/environment.ts",
+              "with": "apps/pet-markt-web/src/app/environments/environment.prod.ts"
+            }
+          ]
         },
         "development": {
           "optimization": false,

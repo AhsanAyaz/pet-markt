@@ -4,6 +4,10 @@ export const appRoutes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
+    redirectTo: 'home',
+  },
+  {
+    path: 'home',
     loadComponent: async () => {
       const mod = await import('./home/home.component');
       return mod.HomeComponent;
@@ -47,5 +51,9 @@ export const appRoutes: Route[] = [
       );
       return mod.CheckoutSuccessComponent;
     },
+  },
+  {
+    path: '**',
+    redirectTo: 'home',
   },
 ];

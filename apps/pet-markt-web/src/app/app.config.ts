@@ -14,13 +14,14 @@ import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/cache';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { environment } from './environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideApollo(() => {
       const httpLink = inject(HttpLink);
       return {
-        link: httpLink.create({ uri: 'http://localhost:3000/graphql' }),
+        link: httpLink.create({ uri: `${environment.apiUrl}/api/graphql` }),
         cache: new InMemoryCache(),
       };
     }),
