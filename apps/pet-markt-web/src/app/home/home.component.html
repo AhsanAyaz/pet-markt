@@ -1,1 +1,77 @@
-<p>home works!</p>
+<section class="hero bg-base-200 py-16">
+  <div class="hero-content text-center">
+    <div>
+      <h1 class="text-5xl font-bold">Welcome to Pet E-commerce</h1>
+      <p class="py-6">Find the best products for your furry friends!</p>
+      <a routerLink="/products" class="btn btn-primary">Shop Now</a>
+    </div>
+  </div>
+</section>
+
+<section class="featured-products py-16">
+  <h2 class="text-3xl font-bold text-center mb-8">Featured Products</h2>
+  @if (productStore.loading()) {
+  <div>Loading...</div>
+  } @else if (productStore.error()) {
+  <div class="alert alert-error">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="stroke-current shrink-0 h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span>Error: {{ productStore.error() }}</span>
+  </div>
+  } @else if (productStore.products().length) {
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-fr"
+  >
+    @for (product of productStore.products(); track product.id) {
+    <app-product-card [product]="product" (addToCart)="onAddToCart($event)" />
+    }
+  </div>
+  }
+</section>
+
+<section class="hero min-h-[70vh] bg-base-200">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold">Pet Markt</h1>
+      <p class="py-6">
+        Your one-stop shop for all pet needs. Find the best products for your
+        furry friends.
+      </p>
+      <a routerLink="/products" class="btn btn-primary">Shop Now</a>
+    </div>
+  </div>
+</section>
+
+<section class="py-12">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Quality Products</h2>
+        <p>We offer only the best products for your pets.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Fast Delivery</h2>
+        <p>Get your pet supplies delivered quickly.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Best Prices</h2>
+        <p>Competitive prices for all products.</p>
+      </div>
+    </div>
+  </div>
+</section>
