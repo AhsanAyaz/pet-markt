@@ -1,0 +1,58 @@
+<div class="max-w-md mx-auto">
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title">Login</h2>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="space-y-4">
+        <div class="form-control">
+          <label for="emailInput" class="label">
+            <span class="label-text">Email</span>
+          </label>
+          <input
+            id="emailInput"
+            type="email"
+            [(ngModel)]="email"
+            name="email"
+            required
+            class="input input-bordered"
+          />
+        </div>
+
+        <div class="form-control">
+          <label for="passwordInput" class="label">
+            <span class="label-text">Password</span>
+          </label>
+          <input
+            id="passwordInput"
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            required
+            class="input input-bordered"
+          />
+        </div>
+
+        <div class="form-control mt-6">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="!loginForm.form.valid"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+
+      <div class="divider">OR</div>
+
+      <button class="btn btn-outline w-full" (click)="loginWithGoogle()">
+        Continue with Google
+      </button>
+
+      <p class="text-center mt-4">
+        Don't have an account?
+        <a routerLink="/auth/signup" class="link link-primary">Sign up</a>
+      </p>
+    </div>
+  </div>
+</div>

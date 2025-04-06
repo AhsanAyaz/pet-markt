@@ -4,19 +4,37 @@ import { Order } from './entities/order.entity';
 import { CreateOrderInput } from './dto/create-order.input';
 import { OrderDeletionResp } from './dto/order-deletion-response.dto';
 import { UpdateOrderInput } from './dto/update-order.input';
+import { UnauthorizedException } from '@nestjs/common';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Resolver(() => Order)
 export class OrdersResolver {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    private readonly ordersService: OrdersService,
+    private readonly firebaseService: FirebaseService
+  ) {}
 
   @Mutation(() => Order)
-  createOrder(@Args('createOrderInput') createOrderInput: CreateOrderInput) {
-    return this.ordersService.create(createOrderInput);
+  async createOrder(
+    @Args('createOrderInput') createOrderInput: CreateOrderInput
+  ) {
+    let userId: string | undefined = undefined;
+    const { token, ...orderData } = createOrderInput;
+    if (token) {
+      userId = await this.firebaseService.verifyToken(token);
+    }
+    return this.ordersService.create({ ...orderData, userId });
   }
 
-  @Query(() => [Order], { name: 'orders' })
-  findAll() {
-    return this.ordersService.findAll();
+  @Query(() => [Order], { name: 'userOrders' })
+  async findByUserId(@Args('token', { type: () => String }) token: string) {
+    console.log('token in backend userOrders', token);
+    const userId = await this.firebaseService.verifyToken(token);
+    if (!userId) {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
+    console.log('userId in backend userOrders: authenticated: ', userId);
+    return this.ordersService.findByUserId(userId);
   }
 
   @Query(() => Order, { name: 'order' })

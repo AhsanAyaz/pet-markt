@@ -30,6 +30,65 @@
             <span class="cart-count">{{ cartStore.totalItems() }}</span>
           </a>
         </li>
+        @if((currentUser$ | async) === null) {
+        <li><a routerLink="/auth/login" class="hover:underline">Login</a></li>
+        <li>
+          <a routerLink="/auth/signup" class="hover:underline">Sign Up</a>
+        </li>
+        } @else {
+        <li class="relative">
+          <button
+            (click)="toggleDropdown()"
+            class="flex items-center space-x-2 hover:opacity-80 focus:outline-none"
+            aria-haspopup="true"
+            [attr.aria-expanded]="isDropdownOpen"
+          >
+            <img
+              [src]="getUserPhotoUrl(currentUser$ | async)"
+              [alt]="getUserDisplayName(currentUser$ | async) + ' avatar'"
+              class="w-8 h-8 rounded-full"
+            />
+            <span class="text-sm">{{
+              getUserDisplayName(currentUser$ | async)
+            }}</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </button>
+          <div
+            *ngIf="isDropdownOpen"
+            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 text-gray-700"
+            role="menu"
+          >
+            <a
+              routerLink="/orders"
+              class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+              role="menuitem"
+              (click)="toggleDropdown()"
+            >
+              My orders
+            </a>
+            <button
+              (click)="logout()"
+              class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+              role="menuitem"
+            >
+              Logout
+            </button>
+          </div>
+        </li>
+        }
       </ul>
     </nav>
   </div>

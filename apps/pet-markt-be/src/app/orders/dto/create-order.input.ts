@@ -20,6 +20,12 @@ export class CreateOrderInput {
   @Field(() => Float)
   totalAmount!: number;
 
-  // @Field(() => String)
-  // token!: string;
+  @Field(() => String)
+  token!: string;
+}
+
+export interface CreateOrderServiceDto {
+  items: OrderItemInput[];
+  totalAmount: number;
+  userId?: string;
 }

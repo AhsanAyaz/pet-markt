@@ -15,6 +15,9 @@ import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/cache';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { environment } from './environments/environment';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+console.log(environment.firebase);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +28,8 @@ export const appConfig: ApplicationConfig = {
         cache: new InMemoryCache(),
       };
     }),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
     provideHttpClient(withFetch()),
     provideClientHydration(withEventReplay(), withIncrementalHydration()),
     provideZoneChangeDetection({ eventCoalescing: true }),

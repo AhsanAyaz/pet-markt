@@ -7,6 +7,7 @@ import { join } from 'path';
 import { ProductsModule } from './products/products.module';
 import { CheckoutModule } from './checkout/checkout.module';
 import { OrdersModule } from './orders/orders.module';
+import { FirebaseModule } from './firebase/firebase.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { OrdersModule } from './orders/orders.module';
     ProductsModule,
     CheckoutModule,
     OrdersModule,
+    FirebaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

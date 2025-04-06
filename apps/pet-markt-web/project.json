@@ -7,7 +7,7 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@ngx-env/builder:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/pet-markt-web",
@@ -24,6 +24,9 @@
         ],
         "styles": ["apps/pet-markt-web/src/styles.scss"],
         "scripts": [],
+        "ngxEnv": {
+          "prefix": "NG_APP"
+        },
         "server": "apps/pet-markt-web/src/main.server.ts",
         "ssr": {
           "entry": "apps/pet-markt-web/src/server.ts"
@@ -61,7 +64,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@ngx-env/builder:dev-server",
       "configurations": {
         "production": {
           "buildTarget": "pet-markt-web:build:production"
@@ -73,7 +76,7 @@
       "defaultConfiguration": "development"
     },
     "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "executor": "@ngx-env/builder:extract-i18n",
       "options": {
         "buildTarget": "pet-markt-web:build"
       }

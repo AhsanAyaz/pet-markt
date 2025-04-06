@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOrderInput } from './dto/create-order.input';
+import { CreateOrderServiceDto } from './dto/create-order.input';
 import { PrismaService } from '../prisma/prisma.service';
 import { OrderStatus, Prisma } from '@prisma/client';
 import { OrderDeletionResp } from './dto/order-deletion-response.dto';
@@ -7,12 +7,13 @@ import { OrderDeletionResp } from './dto/order-deletion-response.dto';
 @Injectable()
 export class OrdersService {
   constructor(private prisma: PrismaService) {}
-  create(createOrderInput: CreateOrderInput) {
-    const { totalAmount, items } = createOrderInput;
+  create(createOrderInput: CreateOrderServiceDto) {
+    const { totalAmount, items, userId } = createOrderInput;
     return this.prisma.order.create({
       data: {
         totalAmount,
         status: 'PAYMENT_REQUIRED',
+        userId,
         items: {
           create: items.map((item) => ({
             quantity: item.quantity,
@@ -96,5 +97,26 @@ export class OrdersService {
       orderId: id,
       error: 'Order is not in PAYMENT_REQUIRED state',
     };
+  }
+
+  async findByUserId(userId: string) {
+    return this.prisma.order.findMany({
+      where: {
+        userId,
+        status: {
+          not: 'PAYMENT_REQUIRED',
+        },
+      },
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 }

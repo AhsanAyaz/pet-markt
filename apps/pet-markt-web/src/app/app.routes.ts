@@ -21,6 +21,16 @@ export const appRoutes: Route[] = [
     },
   },
   {
+    path: 'auth/login',
+    loadComponent: () =>
+      import('./auth/login/login.component').then((c) => c.LoginComponent),
+  },
+  {
+    path: 'auth/signup',
+    loadComponent: () =>
+      import('./auth/signup/signup.component').then((c) => c.SignupComponent),
+  },
+  {
     path: 'cart',
     loadComponent: async () => {
       const mod = await import('./cart/cart.component');
@@ -50,6 +60,20 @@ export const appRoutes: Route[] = [
         './checkout/checkout-success/checkout-success.component'
       );
       return mod.CheckoutSuccessComponent;
+    },
+  },
+  {
+    path: 'orders',
+    loadComponent: async () => {
+      const mod = await import('./orders/orders.component');
+      return mod.OrdersComponent;
+    },
+  },
+  {
+    path: 'orders/:id',
+    loadComponent: async () => {
+      const mod = await import('./order/order.component');
+      return mod.OrderComponent;
     },
   },
   {

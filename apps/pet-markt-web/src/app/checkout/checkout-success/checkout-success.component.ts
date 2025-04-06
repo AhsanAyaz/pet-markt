@@ -2,7 +2,7 @@ import { afterNextRender, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderStore } from '../../stores/order.store';
 import { ActivatedRoute } from '@angular/router';
-import { OrderDetailComponent } from '../../orders/components/order-detail/order-detail.component';
+import { OrderDetailComponent } from '../../components/order-detail/order-detail.component';
 import { CartStore } from '../../stores/cart.store';
 import { EMPTY, mergeMap } from 'rxjs';
 
@@ -30,7 +30,7 @@ export class CheckoutSuccessComponent implements OnInit {
       return;
     }
     this.orderStore
-      .getOrder(orderId)
+      .getOrder(orderId, null)
       .pipe(
         mergeMap((order) => {
           if (order.status === 'PAYMENT_REQUIRED') {
