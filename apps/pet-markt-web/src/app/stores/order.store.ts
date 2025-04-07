@@ -1,8 +1,9 @@
 import { inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { Order, OrderItem, Product } from '@prisma/client';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { Order, OrderItem, OrderStatus, Product } from '@prisma/client';
 import { Apollo, gql } from 'apollo-angular';
-import { tap } from 'rxjs';
+import { map, pipe, switchMap, tap } from 'rxjs';
 
 const GET_ORDER = gql`
   query GetOrder($id: String!) {
@@ -21,6 +22,37 @@ const GET_ORDER = gql`
         }
       }
       createdAt
+    }
+  }
+`;
+
+const UPDATE_ORDER = gql`
+  mutation UpdateOrderStatus($id: String!, $status: OrderStatus!) {
+    updateOrder(updateOrderInput: { id: $id, status: $status }) {
+      id
+      status
+      totalAmount # Include other fields you want to see in the response
+      items {
+        id
+        quantity
+        price
+        product {
+          id
+          name
+          image
+        }
+      }
+      updatedAt
+    }
+  }
+`;
+
+const DELETE_UNPAID_ORDER = gql`
+  mutation RemoveOrder($id: String!) {
+    removeUnpaid(id: $id) {
+      orderId
+      success
+      error
     }
   }
 `;
@@ -64,9 +96,46 @@ export const OrderStore = signalStore(
           tap({
             next: ({ data }) => patchState(store, { orderDetail: data.order }),
             error: (error) => patchState(store, { error: error.message }),
-          })
+          }),
+          map(({ data }) => data.order)
         );
     },
+    updateOrder: rxMethod<{ id: string; status: OrderStatus }>(
+      pipe(
+        switchMap(({ id, status }) =>
+          apollo.mutate<{
+            updateOrder: OrderWithItems;
+          }>({
+            mutation: UPDATE_ORDER,
+            variables: {
+              id,
+              status,
+            },
+          })
+        )
+      )
+    ),
+    removeUnpaidOrder: rxMethod<string>(
+      pipe(
+        switchMap((id) =>
+          apollo.mutate<{
+            updateOrder: OrderWithItems;
+          }>({
+            mutation: DELETE_UNPAID_ORDER,
+            variables: {
+              id,
+            },
+          })
+        ),
+        tap({
+          next: ({ data }) => {
+            console.log('Unpaid order deleted', { data });
+            patchState(store, { error: null });
+          },
+          error: (error) => patchState(store, { error: error.message }),
+        })
+      )
+    ),
     setError(error: string) {
       patchState(store, {
         error,

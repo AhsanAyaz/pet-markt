@@ -29,7 +29,7 @@ model Product {
 model Order {
   id          String      @id @default(uuid())
   userId      String? // Firebase Auth UID (optional for guest orders)
-  status      OrderStatus @default(PENDING)
+  status      OrderStatus @default(PAYMENT_REQUIRED)
   totalAmount Float
   paymentId   String?
   items       OrderItem[]
@@ -43,7 +43,7 @@ model OrderItem {
   productId String
   quantity  Int
   price     Float
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id])
 }
 
@@ -51,4 +51,5 @@ enum OrderStatus {
   PENDING
   STARTED_DELIVERY
   DELIVERED
+  PAYMENT_REQUIRED
 }

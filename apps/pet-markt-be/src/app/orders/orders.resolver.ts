@@ -3,6 +3,7 @@ import { OrdersService } from './orders.service';
 import { Order } from './entities/order.entity';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
+import { DeleteOrderResp } from './dto/delete-order-resp';
 
 @Resolver(() => Order)
 export class OrdersResolver {
@@ -24,12 +25,15 @@ export class OrdersResolver {
   }
 
   @Mutation(() => Order)
-  updateOrder(@Args('updateOrderInput') updateOrderInput: UpdateOrderInput) {
+  updateOrder(
+    @Args('updateOrderInput', { type: () => UpdateOrderInput })
+    updateOrderInput: UpdateOrderInput
+  ) {
     return this.ordersService.update(updateOrderInput.id, updateOrderInput);
   }
 
-  @Mutation(() => Order)
-  removeOrder(@Args('id', { type: () => Int }) id: number) {
-    return this.ordersService.remove(id);
+  @Mutation(() => DeleteOrderResp)
+  removeUnpaid(@Args('id', { type: () => String }) id: string) {
+    return this.ordersService.removeUnpaid(id);
   }
 }
