@@ -40,6 +40,8 @@ pm2 describe backend
 echo "Navigating back to project root..."
 cd ../../../
 
+rm -r dist/apps/pet-markt-web
+
 echo "Building frontend application..."
 npx nx build pet-markt-web
 
