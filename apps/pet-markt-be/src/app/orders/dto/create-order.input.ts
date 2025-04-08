@@ -23,3 +23,9 @@ export class CreateOrderInput {
   // @Field(() => String)
   // token!: string;
 }
+
+export interface CreateOrderServiceDto {
+  items: OrderItemInput[];
+  totalAmount: number;
+  userId?: string;
+}

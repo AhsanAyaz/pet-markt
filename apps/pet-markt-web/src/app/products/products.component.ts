@@ -25,7 +25,6 @@ export class ProductsComponent {
       this.searchSubject
         .pipe(debounceTime(500), distinctUntilChanged(), this.destroyed())
         .subscribe((term) => {
-          console.log({ term });
           this.productStore.searchProducts(term);
         });
     });

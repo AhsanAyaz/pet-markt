@@ -1,0 +1,42 @@
+<div class="max-w-2xl mx-auto py-8 space-y-8">
+  @if (orderStore.loading()) {
+  <div class="text-center">
+    <span class="loading loading-spinner loading-lg"></span>
+  </div>
+  } @else if (orderStore.error()) {
+  <div class="alert alert-error">
+    {{ orderStore.error() }}
+  </div>
+  } @else if (orderStore.orders().length > 0) {
+  <div class="space-y-8">
+    <h2 class="text-2xl font-bold">Your Orders</h2>
+    @for (order of orderStore.orders(); track order.id) {
+    <div
+      class="card bg-base-100 hover:bg-base-200 cursor-pointer"
+      [routerLink]="['/orders', order.id]"
+    >
+      <div class="card-body">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="font-semibold">Order #{{ order.id }}</h3>
+            <p class="text-sm text-gray-300">
+              {{ order.createdAt | date : 'medium' }}
+            </p>
+          </div>
+          <div class="text-right">
+            <p class="font-bold">${{ order.totalAmount | number : '1.2-2' }}</p>
+            <p class="text-sm text-gray-300">Status: {{ order.status }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  } @else {
+  <div class="text-center">
+    <h2 class="text-2xl font-bold mb-4">No Orders Found</h2>
+    <p class="text-gray-300">You haven't placed any orders yet.</p>
+    <a routerLink="/products" class="btn btn-primary mt-4">Start Shopping</a>
+  </div>
+  }
+</div>
